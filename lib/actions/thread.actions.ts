@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { connectToDb } from "../mongoose";
+import Community from "../models/community.model";
 interface Params {
   text: string;
   author: string;
@@ -17,10 +18,15 @@ export async function createThread({
 }: Params) {
   try {
     connectToDb();
+    const communityIdObject = await Community.findOne(
+      { id: communityId },
+      { _id: 1 }
+    );
+
     const createdThread = await Thread.create({
       text,
       author,
-      community: null,
+      community: communityIdObject,
     });
 
     await User.findByIdAndUpdate(author, {
@@ -65,21 +71,28 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
   return { posts, isNext };
 }
 
-export async function fetchThreadById(id: string) {
-  connectToDb();
-
-  //todo populate community
+export async function fetchThreadById(threadId: string) {
   try {
-    const thread = await Thread.findById(id)
+    connectToDb();
+    const thread = await Thread.findById(threadId)
       .populate({
         path: "author",
         model: User,
         select: "_id id name image",
       })
       .populate({
+        path: "community",
+        model: Community,
+        select: "_id id name image",
+      })
+      .populate({
         path: "children",
         populate: [
-          { path: "author", model: User, select: "_id id name parentId image" },
+          {
+            path: "author",
+            model: User,
+            select: "_id id name parentId image",
+          },
           {
             path: "children",
             model: Thread,
@@ -92,9 +105,11 @@ export async function fetchThreadById(id: string) {
         ],
       })
       .exec();
+
     return thread;
-  } catch (error: any) {
-    throw new Error(`Error fetching thread: ${error.message}`);
+  } catch (err) {
+    console.error("Error while fetching thread:", err);
+    throw new Error("Unable to fetch thread");
   }
 }
 

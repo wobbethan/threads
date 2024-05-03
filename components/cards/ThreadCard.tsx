@@ -1,6 +1,8 @@
+import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useToast } from "../ui/use-toast";
 
 interface Props {
   id: string;
@@ -74,13 +76,6 @@ const ThreadCard = ({
                   />
                 </Link>
                 <Image
-                  src="/assets/repost.svg"
-                  alt="repost"
-                  height={24}
-                  width={24}
-                  className="cursor-pointer object-contain"
-                />
-                <Image
                   src="/assets/share.svg"
                   alt="share"
                   height={24}
@@ -99,6 +94,23 @@ const ThreadCard = ({
           </div>
         </div>
       </div>
+      {!isComment && community && (
+        <Link
+          href={`/communities/${community.id}`}
+          className="mt-5 flex items-center"
+        >
+          <p className="text-subtle-medium text-grey-1">
+            {formatDateString(createdAt)}&nbsp;- {community.name} Community
+          </p>
+          <Image
+            src={community.image}
+            alt={community.name}
+            width={14}
+            height={14}
+            className="ml-1 rounded-full object-cover"
+          />
+        </Link>
+      )}
     </article>
   );
 };

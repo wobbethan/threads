@@ -38,7 +38,7 @@ export async function updateUser({
   }
 }
 
-export async function fetchUser(userId: String) {
+export async function fetchUser(userId: string) {
   try {
     connectToDb();
     return await User.findOne({ id: userId });
