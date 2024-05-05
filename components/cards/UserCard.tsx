@@ -14,6 +14,8 @@ interface Props {
 
 const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
   const router = useRouter();
+  let link: any;
+  link = personType === "Community" ? "/communities" : "/profile";
   return (
     <article className="user-card">
       <div className="user-card_avatar">
@@ -31,7 +33,7 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
       </div>
       <Button
         className="user-card_btn"
-        onClick={() => router.push(`/profile/${id}`)}
+        onClick={() => router.push(`${link}/${id}`)}
       >
         View
       </Button>

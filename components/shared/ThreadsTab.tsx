@@ -36,7 +36,6 @@ const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
                   id: thread.author.id,
                 }
           } //may need to update ot determine if author / owner of community
-          community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
         />

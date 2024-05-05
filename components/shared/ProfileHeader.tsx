@@ -3,7 +3,7 @@ import React from "react";
 
 interface Props {
   accountId: string;
-  authUserId: string;
+  authUserId?: string;
   name: string;
   username: string;
   imgUrl: string;

@@ -80,11 +80,11 @@ export async function fetchUsers({
   pageSize = 20,
   sortBy = "desc",
 }: {
-  userId: string;
-  searchString: string;
-  pageNumber: number;
-  pageSize: number;
-  sortBy: SortOrder;
+  userId?: string;
+  searchString?: string;
+  pageNumber?: number;
+  pageSize?: number;
+  sortBy?: SortOrder;
 }) {
   try {
     connectToDb();
