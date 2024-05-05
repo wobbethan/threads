@@ -5,7 +5,7 @@ export const ThreadValidation = z.object({
     .string()
     .nonempty()
     .min(3, { message: "Minimum 3 characters" })
-    .max(30),
+    .max(300),
   accountId: z.string(),
 });
 
@@ -14,5 +14,5 @@ export const CommentValidation = z.object({
     .string()
     .nonempty()
     .min(3, { message: "Minimum 3 characters" })
-    .max(30),
+    .max(300),
 });
